@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YT-DLP Generator</title>
+
+    <!-- Fonts / Icons - Updated to Outfit + Material Symbols Rounded -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Light Theme (From reference design) */
+            --bg-main: #F0F4F8;
+            --bg-card: #FFFFFF;
+            --bg-input: #E1E8F0;
+            --bg-input-focus: #E1E8F0;
+            --bg-chip: #E1E8F0;
+            --bg-chip-success: #d9f6e5;
+            --bg-chip-error: #ffe1e1;
+
+            --primary: #1E3A8A;
+            --primary-dark: #1E3A8A;
+            --text-main: #1A202C;
+            --text-muted: #64748B;
+            --text-soft: #64748B;
+            --white-soft: #ffffff;
+
+
+            --success: #16A34A;
+            --error: #DC2626;
+
+            --player-bg: #9D4A6C;
+            --player-text: #FFFFFF;
+
+            --icon-bg: #E2E8F0;
+            --icon-color: #475569;
+
+            --accent-primary-text: #FFFFFF;
+
+            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
+            --radius-xl: 26px;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme (From reference design) */
+            --bg-main: #0F141E;
+            --bg-card: #171E2E;
+            --bg-input: #212A3E;
+            --bg-input-focus: #212A3E;
+            --bg-chip: #212A3E;
+            --bg-chip-success: #07331e;
+            --bg-chip-error: #3b1616;
+
+            --primary: #A8C7FA;
+            --primary-dark: #A8C7FA;
+
+            --text-main: #FFFFFF;
+            --text-muted: #94A3B8;
+            --text-soft: #94A3B8;
+
+            --success: #86EFAC;
+            --error: #FCA5A5;
+
+            --player-bg: #7B3450;
+            --player-text: #FFFFFF;
+
+            --icon-bg: #212A3E;
+            --icon-color: #A8C7FA;
+
+            --accent-primary-text: #051B44;
+
+            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.55);
+        }
+
+        *{margin:0;padding:0;box-sizing:border-box;}
+
+        html,body{height:100%;}
+
+        body{
+            font-family: 'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text",
+                         "Segoe UI",Roboto,sans-serif;
+            background: radial-gradient(circle at top left,#f5f7ff 0,var(--bg-main) 40%);
+            color:var(--text-main);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        [data-theme="dark"] body {
+            background: var(--bg-main);
+        }
+
+        .material-symbols-rounded{
+            font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
+        }
+
+        .material-symbols-rounded.filled{
+            font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
+        }
+
+        /* MAIN LAYOUT */
+        .app{
+            width:100%;
+            max-width:640px;
+            margin:40px auto;
+            display:flex;
+            flex-direction:column;
+            gap:26px;
+            padding:32px 24px 40px;
+        }
+
+        /* HEADER */
+        .header{
+            position:relative;
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+            padding:0;
+            align-items:flex-start;
+        }
+
+        .logo-box{display:none;}
+
+        .header-info{flex:none;}
+
+        .title{
+            font-size:2.8rem;
+            line-height:1.05;
+            letter-spacing:-0.04em;
+            font-weight:700;
+            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+        }
+
+        .subtitle{
+            margin-top:6px;
+            font-size:0.95rem;
+            color:var(--text-muted);
+            font-weight:400;
+            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+        }
+
+        .icon-btn{
+            position:absolute;
+            top:0;
+            right:0;
+            width:44px;
+            height:44px;
+            border-radius:50%;
+            border:none;
+            background:var(--bg-card);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow:0 10px 30px rgba(15,23,42,0.12);
+            cursor:pointer;
+            color:var(--text-main);
+            transition:transform .15s,box-shadow .15s,background .15s;
+        }
+        .icon-btn:hover{
+            transform:translateY(-1px);
+            box-shadow:0 12px 34px rgba(15,23,42,0.16);
+        }
+
+        /* CARDS */
+        .card{
+            background:var(--bg-card);
+            border-radius:var(--radius-xl);
+            padding:22px 22px 20px;
+            box-shadow:var(--shadow-soft);
+            border:1px solid rgba(148,163,184,0.12);
+        }
+
+        /* INPUT CARD */
+        .input-row{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            margin-bottom:16px;
+        }
+
+        .input-icon{
+            width:40px;
+            height:40px;
+            border-radius:16px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:var(--icon-bg);
+            color:var(--primary);
+        }
+        [data-theme="dark"] .input-icon{
+            background:var(--icon-bg);
+            color:var(--icon-color);
+        }
+        .input-icon .material-symbols-rounded{
+            font-variation-settings:'FILL' 1,'wght' 600,'GRAD' 0,'opsz' 24;
+            font-size:20px;
+        }
+
+        .input-text{flex:1;}
+
+        .input-label{
+            font-size:.92rem;
+            font-weight:600;
+            color:var(--text-main);
+            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+        }
+
+        .input-hint{
+            font-size:.8rem;
+            margin-top:2px;
+            color:var(--text-soft);
+            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+        }
+
+        .input-field{
+            width:100%;
+            margin-top:4px;
+            padding:13px 18px;
+            font-size:.95rem;
+            font-weight:500;
+            border-radius:18px;
+            border:none;
+            background:var(--bg-input);
+            color:var(--text-main);
+            outline:none;
+            cursor:pointer;
+            transition:background .15s,box-shadow .15s,transform .06s;
+            box-shadow:inset 0 0 0 1px rgba(148,163,184,.45);
+            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+        }
+        .input-field:focus{
+            background:var(--bg-input-focus);
+            box-shadow:inset 0 0 0 2px var(--primary);
+            transform:translateY(-.5px);
+        }
+        .input-field::placeholder{color:var(--text-soft);}
+
+        /* STATUS CHIP */
+        .status-chip{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            margin-top:16px;
+            padding:7px 14px;
+            border-radius:16px;
+            background:var(--bg-chip);
+            font-size:.78rem;
+            font-weight:600;
+            color:var(--text-muted);
+            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+        }
+        .status-chip.success{
+            background:var(--bg-chip-success);
+            color:var(--success);
+        }
+        .status-chip.error{
+            background:var(--bg-chip-error);
+            color:var(--error);
+        }
+        .status-chip .material-symbols-rounded{font-size:18px;}
+
+        /* OUTPUT CARD */
+        .output-card{
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+            padding-bottom:20px;
+        }
+
+        .output-header{
+            display:flex;
+            align-items:center;
+            justify-content:flex-start;
+            gap:10px;
+            margin-bottom:6px;
+        }
+
+        .output-title{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            flex:1;
+        }
+
+        .output-icon{
+            width:40px;
+            height:40px;
+            border-radius:16px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:var(--icon-bg);
+            color:var(--primary);
+        }
+        [data-theme="dark"] .output-icon{
+            background:var(--icon-bg);
+            color:var(--icon-color);
+        }
+
+        .output-label{
+            font-size:.92rem;
+            font-weight:600;
+            color:var(--text-main);
+            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+        }
+
+        /* COPY BUTTON */
+        .copy-btn{
+            margin-top:16px;
+            width:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+
+            padding:15px 26px;
+            border-radius:9999px;
+            border:none;
+
+            background:var(--primary);
+            color:var(--accent-primary-text);
+            box-shadow:0 18px 40px rgba(15,23,42,0.45);
+
+            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+            font-size:.95rem;
+            font-weight:700;
+            letter-spacing:.02em;
+
+            cursor:pointer;
+            transition:background .14s ease, transform .08s ease, box-shadow .14s ease;
+        }
+
+        /* Circular white icon container */
+        .copy-icon-circle{
+            width:28px;
+            height:28px;
+            border-radius:9999px;
+            background:var(--accent-primary-text);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .copy-btn .material-symbols-rounded{
+            font-variation-settings:'FILL' 1,'wght' 600,'GRAD' 0,'opsz' 20;
+            font-size:18px;
+            color:var(--white-soft);
+        }
+
+        .copy-btn:hover{
+            transform:translateY(-1px);
+            box-shadow:0 22px 48px rgba(15,23,42,0.50);
+        }
+        .copy-btn:active{
+            transform:translateY(0);
+            box-shadow:0 12px 30px rgba(15,23,42,0.42);
+        }
+        .copy-btn.copied{
+            background:var(--success);
+            color:#000000;
+            box-shadow:0 18px 42px rgba(22,163,74,.50);
+        }
+        .copy-btn.copied .copy-icon-circle{
+            background:#000000;
+        }
+        .copy-btn.copied .material-symbols-rounded{
+            color:var(--success);
+        }
+
+        .command-box{
+            width:100%;
+            min-height:80px;
+            margin-top:2px;
+            padding:13px 18px;
+            border-radius:18px;
+            border:none;
+            background:var(--bg-input);
+            color:var(--primary);
+            font-family:monospace;
+            font-size:.84rem;
+            line-height:1.7;
+            resize:vertical;
+            outline:none;
+            box-shadow:inset 0 0 0 1px rgba(148,163,184,.45);
+        }
+        .command-box::placeholder{
+            color:var(--text-soft);
+            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+            font-size:1rem;
+        }
+
+        /* SNACKBAR - Styled like mini-player */
+        .snackbar{
+            position:fixed;
+            bottom:32px;
+            left:50%;
+            transform:translateX(-50%) translateY(80px);
+            padding:14px 20px;
+            border-radius:28px;
+            display:flex;
+            align-items:center;
+            gap:12px;
+            background:var(--player-bg);
+            color:var(--player-text);
+            font-size:.95rem;
+            font-weight:600;
+            box-shadow:0 14px 40px rgba(15,23,42,.7);
+            opacity:0;
+            pointer-events:none;
+            transition:opacity .5s cubic-bezier(0.34, 1.56, 0.64, 1),transform .5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index:40;
+            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+        }
+        .snackbar.show{
+            opacity:1;
+            transform:translateX(-50%) translateY(0);
+        }
+        .snackbar-icon-wrap{
+            width:40px;
+            height:40px;
+            background:rgba(255,255,255,0.2);
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+        .snackbar .material-symbols-rounded{
+            color:var(--player-text);
+            font-size:20px;
+        }
+
+        /* Scrollbar for textarea */
+        ::-webkit-scrollbar{width:6px;height:6px;}
+        ::-webkit-scrollbar-thumb{
+            background:rgba(148,163,184,.7);
+            border-radius:999px;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width:768px){
+            body{align-items:flex-start;}
+            .app{margin-top:24px;padding:24px 16px 32px;}
+            .title{font-size:2.2rem;}
+        }
+        @media (max-width:480px){
+            .app{margin:12px auto 24px;}
+            .title{font-size:1.9rem;}
+            .card{padding:18px 16px 16px;}
+            .input-field,.command-box{font-size:16px;}
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-box">
+                <span class="material-symbols-rounded">play_arrow</span>
+            </div>
+            <div class="header-info">
+                <h1 class="title">YT-DLP<br>Generator</h1>
+                <p class="subtitle">Tap to paste • Auto-copy</p>
+            </div>
+            <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">
+                <span class="material-symbols-rounded" id="themeIcon">dark_mode</span>
+            </button>
+        </header>
+
+        <!-- Input Card -->
+        <div class="card">
+            <div class="input-row">
+                <div class="input-icon">
+                    <span class="material-symbols-rounded">link</span>
+                </div>
+                <div class="input-text">
+                    <div class="input-label">YouTube URL</div>
+                    <div class="input-hint">Tap below to auto‑paste</div>
+                </div>
+            </div>
+            <input 
+                type="text" 
+                id="urlInput" 
+                class="input-field" 
+                placeholder="Tap here to paste link..."
+                readonly
+                onclick="autoPaste()"
+            >
+            <div class="status-chip" id="statusChip">
+                <span class="material-symbols-rounded" id="statusIcon">hourglass_empty</span>
+                <span id="statusText">Waiting for URL</span>
+            </div>
+        </div>
+
+        <!-- Output Card -->
+        <div class="card output-card">
+            <div class="output-header">
+                <div class="output-title">
+                    <div class="output-icon">
+                        <span class="material-symbols-rounded">terminal</span>
+                    </div>
+                    <span class="output-label">Command Output</span>
+                </div>
+            </div>
+            <textarea 
+                id="commandOutput" 
+                class="command-box" 
+                readonly 
+                placeholder="Generated command will appear here..."
+            ></textarea>
+
+            <button class="copy-btn" id="copyBtn" onclick="manualCopy()">
+                <span class="material-symbols-rounded" id="copyIcon">content_copy</span>
+                <span id="copyText">Copy Command</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Snackbar -->
+    <div class="snackbar" id="snackbar">
+        <div class="snackbar-icon-wrap">
+            <span class="material-symbols-rounded">check</span>
+        </div>
+        <span id="snackbarText">Copied!</span>
+    </div>
+
+    <script>
+        // Theme
+        function toggleTheme() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            document.getElementById('themeIcon').textContent = isDark ? 'dark_mode' : 'light_mode';
+        }
+
+        (function loadTheme() {
+            const saved = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', saved);
+            document.getElementById('themeIcon').textContent = saved === 'dark' ? 'light_mode' : 'dark_mode';
+        })();
+
+        // Auto-paste
+        async function autoPaste() {
+            try {
+                const text = await navigator.clipboard.readText();
+                
+                if (text && /youtube|youtu\.be/i.test(text)) {
+                    document.getElementById('urlInput').value = text;
+                    generateAndCopy(text);
+                } else {
+                    updateStatus('error', 'error', 'No YouTube URL in clipboard');
+                }
+            } catch {
+                updateStatus('error', 'lock', 'Allow clipboard access');
+            }
+        }
+
+        // Generate + Auto-copy (FIXED)
+        function generateAndCopy(url) {
+            const isPlaylist = /[?&]list=/i.test(url);
+            
+            let cmd = 'yt-dlp';
+            cmd += isPlaylist ? ' --yes-playlist' : ' --no-playlist';
+            cmd += ' -x --audio-format mp3 --audio-quality 0';
+            cmd += ' --embed-thumbnail --embed-metadata --add-metadata';
+            cmd += isPlaylist 
+                ? ' -o "C:/Users/Goutam/Music/%(playlist_title)s/%(title)s.%(ext)s"'
+                : ' -o "C:/Users/Goutam/Music/%(title)s.%(ext)s"';
+            cmd += ' --download-archive "C:/Users/Goutam/Music/downloaded.txt"';
+            cmd += ` "${url}"`;
+
+            const textarea = document.getElementById('commandOutput');
+            textarea.value = cmd;
+
+            // Copy using fallback method (works reliably)
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                const type = isPlaylist ? 'Playlist' : 'Track';
+                updateStatus('success', 'check_circle', `${type} • Copied!`);
+                showCopied();
+                showSnackbar('Command copied!');
+            } catch {
+                // Try modern API as fallback
+                navigator.clipboard.writeText(cmd).then(() => {
+                    const type = isPlaylist ? 'Playlist' : 'Track';
+                    updateStatus('success', 'check_circle', `${type} • Copied!`);
+                    showCopied();
+                    showSnackbar('Command copied!');
+                }).catch(() => {
+                    updateStatus('', 'info', 'Tap Copy to copy');
+                });
+            }
+            
+            // Remove selection
+            window.getSelection().removeAllRanges();
+        }
+
+        // Manual copy
+        async function manualCopy() {
+            const cmd = document.getElementById('commandOutput').value;
+            if (!cmd) return;
+
+            try {
+                await navigator.clipboard.writeText(cmd);
+                showCopied();
+                showSnackbar('Copied!');
+            } catch {
+                document.getElementById('commandOutput').select();
+                document.execCommand('copy');
+                showCopied();
+                showSnackbar('Copied!');
+            }
+        }
+
+        function updateStatus(type, icon, text) {
+            const chip = document.getElementById('statusChip');
+            chip.className = 'status-chip' + (type ? ' ' + type : '');
+            document.getElementById('statusIcon').textContent = icon;
+            document.getElementById('statusText').textContent = text;
+        }
+
+        function showCopied() {
+            const btn = document.getElementById('copyBtn');
+            btn.classList.add('copied');
+            document.getElementById('copyIcon').textContent = 'check';
+            document.getElementById('copyText').textContent = 'Copied';
+
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                document.getElementById('copyIcon').textContent = 'content_copy';
+                document.getElementById('copyText').textContent = 'Copy Command';
+            }, 2500);
+        }
+
+        function showSnackbar(msg) {
+            const snackbar = document.getElementById('snackbar');
+            document.getElementById('snackbarText').textContent = msg;
+            snackbar.classList.add('show');
+            setTimeout(() => snackbar.classList.remove('show'), 2500);
+        }
+    </script>
+</body>
+</html>
