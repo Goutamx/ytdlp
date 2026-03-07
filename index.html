@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YT-DLP Generator</title>
 
-    <!-- Fonts / Icons - Updated to Outfit + Material Symbols Rounded -->
+    <!-- Fonts / Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            /* Light Theme (From reference design) */
+            /* Light Theme */
             --bg-main: #F0F4F8;
             --bg-card: #FFFFFF;
             --bg-input: #E1E8F0;
@@ -26,7 +26,6 @@
             --text-soft: #64748B;
             --white-soft: #ffffff;
 
-
             --success: #16A34A;
             --error: #DC2626;
 
@@ -40,10 +39,17 @@
 
             --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
             --radius-xl: 26px;
+
+            /* Toggle specific */
+            --toggle-bg: #E2E8F0;
+            --toggle-bg-active: var(--primary);
+            --toggle-knob: #FFFFFF;
+            --toggle-icon: #64748B;
+            --toggle-icon-active: #FFFFFF;
         }
 
         [data-theme="dark"] {
-            /* Dark Theme (From reference design) */
+            /* Dark Theme */
             --bg-main: #0F141E;
             --bg-card: #171E2E;
             --bg-input: #212A3E;
@@ -71,6 +77,13 @@
             --accent-primary-text: #051B44;
 
             --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.55);
+
+            /* Toggle specific */
+            --toggle-bg: #212A3E;
+            --toggle-bg-active: var(--primary);
+            --toggle-knob: #FFFFFF;
+            --toggle-icon: #94A3B8;
+            --toggle-icon-active: #051B44;
         }
 
         *{margin:0;padding:0;box-sizing:border-box;}
@@ -140,10 +153,17 @@
             font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
         }
 
-        .icon-btn{
+        /* Header buttons container */
+        .header-buttons{
             position:absolute;
             top:0;
             right:0;
+            display:flex;
+            align-items:center;
+            gap:12px;
+        }
+
+        .icon-btn{
             width:44px;
             height:44px;
             border-radius:50%;
@@ -160,6 +180,83 @@
         .icon-btn:hover{
             transform:translateY(-1px);
             box-shadow:0 12px 34px rgba(15,23,42,0.16);
+        }
+
+        /* MODE TOGGLE */
+        .mode-toggle{
+            display:flex;
+            align-items:center;
+            background:var(--bg-card);
+            border-radius:50px;
+            padding:5px;
+            box-shadow:0 10px 30px rgba(15,23,42,0.12);
+            gap:4px;
+        }
+
+        .mode-btn{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:6px;
+            padding:8px 14px;
+            border-radius:50px;
+            border:none;
+            background:transparent;
+            color:var(--text-muted);
+            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+            font-size:0.82rem;
+            font-weight:600;
+            cursor:pointer;
+            transition:all .2s ease;
+        }
+
+        .mode-btn .material-symbols-rounded{
+            font-size:18px;
+            transition:all .2s ease;
+        }
+
+        .mode-btn.active{
+            background:var(--primary);
+            color:var(--accent-primary-text);
+            box-shadow:0 4px 12px rgba(30,58,138,0.3);
+        }
+
+        [data-theme="dark"] .mode-btn.active{
+            box-shadow:0 4px 12px rgba(168,199,250,0.3);
+        }
+
+        .mode-btn:not(.active):hover{
+            background:var(--bg-input);
+            color:var(--text-main);
+        }
+
+        /* Mode indicator chip */
+        .mode-chip{
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            padding:5px 12px;
+            border-radius:12px;
+            background:var(--bg-chip);
+            font-size:.75rem;
+            font-weight:600;
+            color:var(--text-muted);
+            margin-left:8px;
+            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+        }
+
+        .mode-chip.music{
+            background:linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            color:#FFFFFF;
+        }
+
+        .mode-chip.video{
+            background:linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color:#FFFFFF;
+        }
+
+        .mode-chip .material-symbols-rounded{
+            font-size:14px;
         }
 
         /* CARDS */
@@ -201,6 +298,8 @@
         .input-text{flex:1;}
 
         .input-label{
+            display:flex;
+            align-items:center;
             font-size:.92rem;
             font-weight:600;
             color:var(--text-main);
@@ -332,21 +431,10 @@
             transition:background .14s ease, transform .08s ease, box-shadow .14s ease;
         }
 
-        /* Circular white icon container */
-        .copy-icon-circle{
-            width:28px;
-            height:28px;
-            border-radius:9999px;
-            background:var(--accent-primary-text);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-        }
-
         .copy-btn .material-symbols-rounded{
             font-variation-settings:'FILL' 1,'wght' 600,'GRAD' 0,'opsz' 20;
             font-size:18px;
-            color:var(--white-soft);
+            color:var(--accent-primary-text);
         }
 
         .copy-btn:hover{
@@ -362,11 +450,8 @@
             color:#000000;
             box-shadow:0 18px 42px rgba(22,163,74,.50);
         }
-        .copy-btn.copied .copy-icon-circle{
-            background:#000000;
-        }
         .copy-btn.copied .material-symbols-rounded{
-            color:var(--success);
+            color:#000000;
         }
 
         .command-box{
@@ -391,7 +476,7 @@
             font-size:1rem;
         }
 
-        /* SNACKBAR - Styled like mini-player */
+        /* SNACKBAR */
         .snackbar{
             position:fixed;
             bottom:32px;
@@ -431,14 +516,14 @@
             font-size:20px;
         }
 
-        /* Scrollbar for textarea */
+        /* Scrollbar */
         ::-webkit-scrollbar{width:6px;height:6px;}
         ::-webkit-scrollbar-thumb{
             background:rgba(148,163,184,.7);
             border-radius:999px;
         }
 
-        /* Responsive tweaks */
+        /* Responsive */
         @media (max-width:768px){
             body{align-items:flex-start;}
             .app{margin-top:24px;padding:24px 16px 32px;}
@@ -449,6 +534,19 @@
             .title{font-size:1.9rem;}
             .card{padding:18px 16px 16px;}
             .input-field,.command-box{font-size:16px;}
+            .mode-toggle{
+                padding:4px;
+            }
+            .mode-btn{
+                padding:6px 10px;
+                font-size:0.75rem;
+            }
+            .mode-btn span.mode-text{
+                display:none;
+            }
+            .header-buttons{
+                gap:8px;
+            }
         }
     </style>
 </head>
@@ -463,9 +561,23 @@
                 <h1 class="title">YT-DLP<br>Generator</h1>
                 <p class="subtitle">Tap to paste • Auto-copy</p>
             </div>
-            <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">
-                <span class="material-symbols-rounded" id="themeIcon">dark_mode</span>
-            </button>
+            <div class="header-buttons">
+                <!-- Mode Toggle -->
+                <div class="mode-toggle">
+                    <button class="mode-btn active" id="musicBtn" onclick="setMode('music')">
+                        <span class="material-symbols-rounded">music_note</span>
+                        <span class="mode-text">Music</span>
+                    </button>
+                    <button class="mode-btn" id="videoBtn" onclick="setMode('video')">
+                        <span class="material-symbols-rounded">videocam</span>
+                        <span class="mode-text">Video</span>
+                    </button>
+                </div>
+                <!-- Theme Toggle -->
+                <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">
+                    <span class="material-symbols-rounded" id="themeIcon">dark_mode</span>
+                </button>
+            </div>
         </header>
 
         <!-- Input Card -->
@@ -475,7 +587,13 @@
                     <span class="material-symbols-rounded">link</span>
                 </div>
                 <div class="input-text">
-                    <div class="input-label">YouTube URL</div>
+                    <div class="input-label">
+                        YouTube URL
+                        <span class="mode-chip music" id="modeChip">
+                            <span class="material-symbols-rounded" id="modeChipIcon">music_note</span>
+                            <span id="modeChipText">Music</span>
+                        </span>
+                    </div>
                     <div class="input-hint">Tap below to auto‑paste</div>
                 </div>
             </div>
@@ -526,6 +644,55 @@
     </div>
 
     <script>
+        // Current mode: 'music' or 'video'
+        let currentMode = localStorage.getItem('downloadMode') || 'music';
+
+        // Initialize mode on load
+        (function initMode() {
+            setMode(currentMode, false);
+        })();
+
+        // Set download mode
+        function setMode(mode, regenerate = true) {
+            currentMode = mode;
+            localStorage.setItem('downloadMode', mode);
+
+            // Update toggle buttons
+            const musicBtn = document.getElementById('musicBtn');
+            const videoBtn = document.getElementById('videoBtn');
+            
+            if (mode === 'music') {
+                musicBtn.classList.add('active');
+                videoBtn.classList.remove('active');
+            } else {
+                videoBtn.classList.add('active');
+                musicBtn.classList.remove('active');
+            }
+
+            // Update mode chip
+            const modeChip = document.getElementById('modeChip');
+            const modeChipIcon = document.getElementById('modeChipIcon');
+            const modeChipText = document.getElementById('modeChipText');
+
+            if (mode === 'music') {
+                modeChip.className = 'mode-chip music';
+                modeChipIcon.textContent = 'music_note';
+                modeChipText.textContent = 'Music';
+            } else {
+                modeChip.className = 'mode-chip video';
+                modeChipIcon.textContent = 'videocam';
+                modeChipText.textContent = 'Video 720p';
+            }
+
+            // Regenerate command if URL exists
+            if (regenerate) {
+                const url = document.getElementById('urlInput').value;
+                if (url) {
+                    generateAndCopy(url);
+                }
+            }
+        }
+
         // Theme
         function toggleTheme() {
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -556,38 +723,53 @@
             }
         }
 
-        // Generate + Auto-copy (FIXED)
+        // Generate + Auto-copy
         function generateAndCopy(url) {
             const isPlaylist = /[?&]list=/i.test(url);
             
             let cmd = 'yt-dlp';
             cmd += isPlaylist ? ' --yes-playlist' : ' --no-playlist';
-            cmd += ' -x --audio-format mp3 --audio-quality 0';
-            cmd += ' --embed-thumbnail --embed-metadata --add-metadata';
-            cmd += isPlaylist 
-                ? ' -o "C:/Users/Goutam/Music/%(playlist_title)s/%(title)s.%(ext)s"'
-                : ' -o "C:/Users/Goutam/Music/%(title)s.%(ext)s"';
-            cmd += ' --download-archive "C:/Users/Goutam/Music/downloaded.txt"';
+            
+            if (currentMode === 'music') {
+                // Music mode - MP3 audio
+                cmd += ' -x --audio-format mp3 --audio-quality 0';
+                cmd += ' --embed-thumbnail --embed-metadata --add-metadata';
+                cmd += isPlaylist 
+                    ? ' -o "C:/Users/Goutam/Music/%(playlist_title)s/%(title)s.%(ext)s"'
+                    : ' -o "C:/Users/Goutam/Music/%(title)s.%(ext)s"';
+                cmd += ' --download-archive "C:/Users/Goutam/Music/downloaded.txt"';
+            } else {
+                // Video mode - 720p MP4
+                cmd += ' -f "bestvideo[height<=720]+bestaudio/best[height<=720]"';
+                cmd += ' --merge-output-format mp4';
+                cmd += ' --embed-thumbnail --embed-metadata --add-metadata';
+                cmd += isPlaylist 
+                    ? ' -o "C:/Users/Goutam/Documents/Padhai/%(playlist_title)s/%(title)s.%(ext)s"'
+                    : ' -o "C:/Users/Goutam/Documents/Padhai/%(title)s.%(ext)s"';
+                cmd += ' --download-archive "C:/Users/Goutam/Documents/Padhai/downloaded.txt"';
+            }
+            
             cmd += ` "${url}"`;
 
             const textarea = document.getElementById('commandOutput');
             textarea.value = cmd;
 
-            // Copy using fallback method (works reliably)
+            // Copy using fallback method
             textarea.select();
             textarea.setSelectionRange(0, 99999);
             
             try {
                 document.execCommand('copy');
-                const type = isPlaylist ? 'Playlist' : 'Track';
-                updateStatus('success', 'check_circle', `${type} • Copied!`);
+                const type = isPlaylist ? 'Playlist' : (currentMode === 'music' ? 'Track' : 'Video');
+                const modeLabel = currentMode === 'music' ? '🎵' : '🎬';
+                updateStatus('success', 'check_circle', `${type} ${modeLabel} Copied!`);
                 showCopied();
                 showSnackbar('Command copied!');
             } catch {
-                // Try modern API as fallback
                 navigator.clipboard.writeText(cmd).then(() => {
-                    const type = isPlaylist ? 'Playlist' : 'Track';
-                    updateStatus('success', 'check_circle', `${type} • Copied!`);
+                    const type = isPlaylist ? 'Playlist' : (currentMode === 'music' ? 'Track' : 'Video');
+                    const modeLabel = currentMode === 'music' ? '🎵' : '🎬';
+                    updateStatus('success', 'check_circle', `${type} ${modeLabel} Copied!`);
                     showCopied();
                     showSnackbar('Command copied!');
                 }).catch(() => {
@@ -595,7 +777,6 @@
                 });
             }
             
-            // Remove selection
             window.getSelection().removeAllRanges();
         }
 
