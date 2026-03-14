@@ -707,16 +707,42 @@
             document.getElementById('themeIcon').textContent = saved === 'dark' ? 'light_mode' : 'dark_mode';
         })();
 
+        // Strict YouTube URL validation
+        function isValidYouTubeURL(url) {
+            if (!url) return false;
+            
+            // Must start with http:// or https://
+            // Must be from youtube.com, youtu.be, or music.youtube.com
+            // Must have valid path patterns (watch, playlist, shorts, embed, or video ID for youtu.be)
+            const pattern = /^https?:\/\/(www\.)?(youtube\.com\/(watch\?|playlist\?|shorts\/|embed\/|v\/)|youtu\.be\/[a-zA-Z0-9_-]+|music\.youtube\.com\/(watch\?|playlist\?))/i;
+            
+            return pattern.test(url);
+        }
+
         // Auto-paste
         async function autoPaste() {
             try {
                 const text = await navigator.clipboard.readText();
                 
-                if (text && /youtube|youtu\.be/i.test(text)) {
-                    document.getElementById('urlInput').value = text;
-                    generateAndCopy(text);
+                if (!text || !text.trim()) {
+                    updateStatus('error', 'error', 'Clipboard is empty');
+                    return;
+                }
+
+                const trimmedText = text.trim();
+
+                // Check for poisoned clipboard (command instead of URL)
+                if (trimmedText.toLowerCase().startsWith('yt-dlp')) {
+                    updateStatus('error', 'error', 'Clipboard has command, not URL');
+                    return;
+                }
+
+                // Strict YouTube URL validation
+                if (isValidYouTubeURL(trimmedText)) {
+                    document.getElementById('urlInput').value = trimmedText;
+                    generateAndCopy(trimmedText);
                 } else {
-                    updateStatus('error', 'error', 'No YouTube URL in clipboard');
+                    updateStatus('error', 'error', 'Not a valid YouTube URL');
                 }
             } catch {
                 updateStatus('error', 'lock', 'Allow clipboard access');
