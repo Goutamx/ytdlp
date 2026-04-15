@@ -707,17 +707,15 @@
             document.getElementById('themeIcon').textContent = saved === 'dark' ? 'light_mode' : 'dark_mode';
         })();
 
-        // Strict YouTube URL validation
-        function isValidYouTubeURL(url) {
-            if (!url) return false;
-            
-            // Must start with http:// or https://
-            // Must be from youtube.com, youtu.be, or music.youtube.com
-            // Must have valid path patterns (watch, playlist, shorts, embed, or video ID for youtu.be)
-            const pattern = /^https?:\/\/(www\.)?(youtube\.com\/(watch\?|playlist\?|shorts\/|embed\/|v\/)|youtu\.be\/[a-zA-Z0-9_-]+|music\.youtube\.com\/(watch\?|playlist\?))/i;
-            
-            return pattern.test(url);
-        }
+        // Updated Strict YouTube URL validation
+function isValidYouTubeURL(url) {
+    if (!url) return false;
+
+    const pattern = /^https?:\/\/(www\.)?(youtube\.com\/(watch\?|playlist\?|shorts\/|embed\/|v\/|live\/)|youtu\.be\/[a-zA-Z0-9_-]+|music\.youtube\.com\/(watch\?|playlist\?))/i;
+
+    return pattern.test(url);
+}
+
 
         // Auto-paste
         async function autoPaste() {
