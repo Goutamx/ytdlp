@@ -313,7 +313,7 @@
         }
         .status-chip .material-symbols-rounded{font-size:18px;}
 
-        /* RESOLUTION CARD */
+        /* RESOLUTION CARD - THIN VERSION */
         .resolution-card{
             display:none;
             flex-direction:column;
@@ -353,8 +353,8 @@
 
         .resolution-grid{
             display:grid;
-            grid-template-columns:repeat(3, 1fr);
-            gap:10px;
+            grid-template-columns:repeat(6, 1fr); /* 6 across, single row */
+            gap:8px;
         }
 
         .res-btn{
@@ -362,40 +362,40 @@
             flex-direction:column;
             align-items:center;
             justify-content:center;
-            gap:2px;
-            padding:14px 8px;
-            border-radius:18px;
+            gap:1px;
+            padding:6px 4px; /* Highly compact padding */
+            border-radius:12px; /* Sleeker, smaller radius */
             border:none;
             background:var(--bg-input);
             color:var(--text-muted);
             font-family:'Outfit', sans-serif;
-            font-size:.88rem;
+            font-size:.82rem; /* Slightly smaller text */
             font-weight:600;
             cursor:pointer;
-            transition:all .2s ease;
-            box-shadow:inset 0 0 0 1px rgba(148,163,184,.3);
+            transition:all .15s ease;
+            box-shadow:inset 0 0 0 1px rgba(148,163,184,.2);
         }
 
         .res-btn .res-sub{
-            font-size:.65rem;
+            font-size:.6rem;
             font-weight:500;
             color:var(--text-soft);
-            transition:color .2s ease;
+            transition:color .15s ease;
         }
 
         .res-btn.active{
             background:var(--primary);
             color:var(--accent-primary-text);
-            box-shadow:0 6px 18px rgba(30,58,138,0.3);
+            box-shadow:0 4px 12px rgba(30,58,138,0.25);
         }
 
         [data-theme="dark"] .res-btn.active{
-            box-shadow:0 6px 18px rgba(168,199,250,0.3);
+            box-shadow:0 4px 12px rgba(168,199,250,0.25);
         }
 
         .res-btn.active .res-sub{
             color:var(--accent-primary-text);
-            opacity:.7;
+            opacity:.8;
         }
 
         .res-btn:not(.active):hover{
@@ -573,11 +573,13 @@
             .mode-btn{padding:6px 10px;font-size:0.75rem;}
             .mode-btn span.mode-text{display:none;}
             .header-buttons{gap:8px;}
+            
+            /* Responsive 3-column layout for small mobile screens */
             .resolution-grid{
                 grid-template-columns:repeat(3, 1fr);
-                gap:8px;
+                gap:6px;
             }
-            .res-btn{padding:12px 6px;font-size:.82rem;}
+            .res-btn{padding:8px 4px;font-size:.8rem;}
         }
     </style>
 </head>
@@ -630,7 +632,7 @@
             </div>
         </div>
 
-        <!-- Resolution Card (Video only) -->
+        <!-- Resolution Card (Video only - Now Compact and Thin) -->
         <div class="card resolution-card" id="resolutionCard">
             <div class="resolution-header">
                 <div class="resolution-icon">
@@ -698,7 +700,6 @@
 
         (function init() {
             setMode(currentMode, false);
-            // Restore resolution button
             restoreResolutionBtn();
         })();
 
@@ -724,7 +725,6 @@
             document.querySelectorAll('.res-btn').forEach(b => b.classList.remove('active'));
             if (btnEl) btnEl.classList.add('active');
 
-            // Update mode chip text
             document.getElementById('modeChipText').textContent = `Video ${res}p`;
 
             regenerate();
@@ -774,7 +774,7 @@
             }
         }
 
-        // Theme
+        // Theme Toggle
         function toggleTheme() {
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
