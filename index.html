@@ -67,15 +67,24 @@
         }
 
         *{margin:0;padding:0;box-sizing:border-box;}
-        html,body{height:100%;}
+        
+        /* FIX: Allow natural page expansion and scrolling */
+        html{
+            height: auto;
+            min-height: 100%;
+        }
 
+        /* FIX: Start flex container from the top, never center elements off-screen */
         body{
             font-family: 'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
             background: radial-gradient(circle at top left,#f5f7ff 0,var(--bg-main) 40%);
             color:var(--text-main);
             display:flex;
             justify-content:center;
-            align-items:center;
+            align-items:flex-start; 
+            min-height: 100vh;
+            padding: 40px 24px;
+            overflow-y: auto;
         }
 
         [data-theme="dark"] body {
@@ -89,11 +98,9 @@
         .app{
             width:100%;
             max-width:640px;
-            margin:40px auto;
             display:flex;
             flex-direction:column;
-            gap:26px;
-            padding:32px 24px 40px;
+            gap:24px;
         }
 
         .header{
@@ -313,7 +320,7 @@
         }
         .status-chip .material-symbols-rounded{font-size:18px;}
 
-        /* RESOLUTION CARD - THIN VERSION */
+        /* RESOLUTION CARD - COMPACT ROW */
         .resolution-card{
             display:none;
             flex-direction:column;
@@ -353,7 +360,7 @@
 
         .resolution-grid{
             display:grid;
-            grid-template-columns:repeat(6, 1fr); /* 6 across, single row */
+            grid-template-columns:repeat(6, 1fr);
             gap:8px;
         }
 
@@ -363,13 +370,13 @@
             align-items:center;
             justify-content:center;
             gap:1px;
-            padding:6px 4px; /* Highly compact padding */
-            border-radius:12px; /* Sleeker, smaller radius */
+            padding:6px 4px;
+            border-radius:12px;
             border:none;
             background:var(--bg-input);
             color:var(--text-muted);
             font-family:'Outfit', sans-serif;
-            font-size:.82rem; /* Slightly smaller text */
+            font-size:.82rem;
             font-weight:600;
             cursor:pointer;
             transition:all .15s ease;
@@ -560,12 +567,13 @@
         }
 
         @media (max-width:768px){
-            body{align-items:flex-start;}
-            .app{margin-top:24px;padding:24px 16px 32px;}
+            body{padding: 24px 16px;}
+            .app{gap:20px;}
             .title{font-size:2.2rem;}
         }
         @media (max-width:480px){
-            .app{margin:12px auto 24px;}
+            body{padding: 16px 12px;}
+            .app{gap:16px;}
             .title{font-size:1.9rem;}
             .card{padding:18px 16px 16px;}
             .input-field,.command-box{font-size:16px;}
@@ -574,7 +582,6 @@
             .mode-btn span.mode-text{display:none;}
             .header-buttons{gap:8px;}
             
-            /* Responsive 3-column layout for small mobile screens */
             .resolution-grid{
                 grid-template-columns:repeat(3, 1fr);
                 gap:6px;
@@ -632,7 +639,7 @@
             </div>
         </div>
 
-        <!-- Resolution Card (Video only - Now Compact and Thin) -->
+        <!-- Resolution Card -->
         <div class="card resolution-card" id="resolutionCard">
             <div class="resolution-header">
                 <div class="resolution-icon">
