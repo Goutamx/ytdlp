@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YT-DLP Generator</title>
 
-    <!-- Fonts / Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            /* Light Theme */
             --bg-main: #F0F4F8;
             --bg-card: #FFFFFF;
             --bg-input: #E1E8F0;
@@ -18,29 +16,21 @@
             --bg-chip: #E1E8F0;
             --bg-chip-success: #d9f6e5;
             --bg-chip-error: #ffe1e1;
-
             --primary: #1E3A8A;
             --primary-dark: #1E3A8A;
             --text-main: #1A202C;
             --text-muted: #64748B;
             --text-soft: #64748B;
             --white-soft: #ffffff;
-
             --success: #16A34A;
             --error: #DC2626;
-
             --player-bg: #9D4A6C;
             --player-text: #FFFFFF;
-
             --icon-bg: #E2E8F0;
             --icon-color: #475569;
-
             --accent-primary-text: #FFFFFF;
-
             --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
             --radius-xl: 26px;
-
-            /* Toggle specific */
             --toggle-bg: #E2E8F0;
             --toggle-bg-active: var(--primary);
             --toggle-knob: #FFFFFF;
@@ -49,7 +39,6 @@
         }
 
         [data-theme="dark"] {
-            /* Dark Theme */
             --bg-main: #0F141E;
             --bg-card: #171E2E;
             --bg-input: #212A3E;
@@ -57,28 +46,19 @@
             --bg-chip: #212A3E;
             --bg-chip-success: #07331e;
             --bg-chip-error: #3b1616;
-
             --primary: #A8C7FA;
             --primary-dark: #A8C7FA;
-
             --text-main: #FFFFFF;
             --text-muted: #94A3B8;
             --text-soft: #94A3B8;
-
             --success: #86EFAC;
             --error: #FCA5A5;
-
             --player-bg: #7B3450;
             --player-text: #FFFFFF;
-
             --icon-bg: #212A3E;
             --icon-color: #A8C7FA;
-
             --accent-primary-text: #051B44;
-
             --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.55);
-
-            /* Toggle specific */
             --toggle-bg: #212A3E;
             --toggle-bg-active: var(--primary);
             --toggle-knob: #FFFFFF;
@@ -87,12 +67,10 @@
         }
 
         *{margin:0;padding:0;box-sizing:border-box;}
-
         html,body{height:100%;}
 
         body{
-            font-family: 'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text",
-                         "Segoe UI",Roboto,sans-serif;
+            font-family: 'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
             background: radial-gradient(circle at top left,#f5f7ff 0,var(--bg-main) 40%);
             color:var(--text-main);
             display:flex;
@@ -108,11 +86,6 @@
             font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
         }
 
-        .material-symbols-rounded.filled{
-            font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
-        }
-
-        /* MAIN LAYOUT */
         .app{
             width:100%;
             max-width:640px;
@@ -123,7 +96,6 @@
             padding:32px 24px 40px;
         }
 
-        /* HEADER */
         .header{
             position:relative;
             display:flex;
@@ -134,7 +106,6 @@
         }
 
         .logo-box{display:none;}
-
         .header-info{flex:none;}
 
         .title{
@@ -142,7 +113,7 @@
             line-height:1.05;
             letter-spacing:-0.04em;
             font-weight:700;
-            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+            font-family:'Outfit', system-ui,sans-serif;
         }
 
         .subtitle{
@@ -150,10 +121,8 @@
             font-size:0.95rem;
             color:var(--text-muted);
             font-weight:400;
-            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
         }
 
-        /* Header buttons container */
         .header-buttons{
             position:absolute;
             top:0;
@@ -182,7 +151,6 @@
             box-shadow:0 12px 34px rgba(15,23,42,0.16);
         }
 
-        /* MODE TOGGLE */
         .mode-toggle{
             display:flex;
             align-items:center;
@@ -203,7 +171,7 @@
             border:none;
             background:transparent;
             color:var(--text-muted);
-            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+            font-family:'Outfit', sans-serif;
             font-size:0.82rem;
             font-weight:600;
             cursor:pointer;
@@ -230,7 +198,6 @@
             color:var(--text-main);
         }
 
-        /* Mode indicator chip */
         .mode-chip{
             display:inline-flex;
             align-items:center;
@@ -242,24 +209,15 @@
             font-weight:600;
             color:var(--text-muted);
             margin-left:8px;
-            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
         }
 
-        .mode-chip.music{
+        .mode-chip.music,.mode-chip.video{
             background:var(--primary);
             color:var(--accent-primary-text);
         }
 
-        .mode-chip.video{
-            background:var(--primary);
-            color:var(--accent-primary-text);
-        }
+        .mode-chip .material-symbols-rounded{font-size:14px;}
 
-        .mode-chip .material-symbols-rounded{
-            font-size:14px;
-        }
-
-        /* CARDS */
         .card{
             background:var(--bg-card);
             border-radius:var(--radius-xl);
@@ -268,7 +226,6 @@
             border:1px solid rgba(148,163,184,0.12);
         }
 
-        /* INPUT CARD */
         .input-row{
             display:flex;
             align-items:center;
@@ -303,14 +260,12 @@
             font-size:.92rem;
             font-weight:600;
             color:var(--text-main);
-            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
         }
 
         .input-hint{
             font-size:.8rem;
             margin-top:2px;
             color:var(--text-soft);
-            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
         }
 
         .input-field{
@@ -327,7 +282,7 @@
             cursor:pointer;
             transition:background .15s,box-shadow .15s,transform .06s;
             box-shadow:inset 0 0 0 1px rgba(148,163,184,.45);
-            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+            font-family:'Outfit', sans-serif;
         }
         .input-field:focus{
             background:var(--bg-input-focus);
@@ -336,7 +291,6 @@
         }
         .input-field::placeholder{color:var(--text-soft);}
 
-        /* STATUS CHIP */
         .status-chip{
             display:inline-flex;
             align-items:center;
@@ -348,7 +302,6 @@
             font-size:.78rem;
             font-weight:600;
             color:var(--text-muted);
-            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
         }
         .status-chip.success{
             background:var(--bg-chip-success);
@@ -359,6 +312,97 @@
             color:var(--error);
         }
         .status-chip .material-symbols-rounded{font-size:18px;}
+
+        /* RESOLUTION CARD */
+        .resolution-card{
+            display:none;
+            flex-direction:column;
+            gap:12px;
+        }
+
+        .resolution-card.visible{
+            display:flex;
+        }
+
+        .resolution-header{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .resolution-icon{
+            width:40px;
+            height:40px;
+            border-radius:16px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:var(--icon-bg);
+            color:var(--primary);
+        }
+        [data-theme="dark"] .resolution-icon{
+            background:var(--icon-bg);
+            color:var(--icon-color);
+        }
+
+        .resolution-label{
+            font-size:.92rem;
+            font-weight:600;
+            color:var(--text-main);
+        }
+
+        .resolution-grid{
+            display:grid;
+            grid-template-columns:repeat(3, 1fr);
+            gap:10px;
+        }
+
+        .res-btn{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            gap:2px;
+            padding:14px 8px;
+            border-radius:18px;
+            border:none;
+            background:var(--bg-input);
+            color:var(--text-muted);
+            font-family:'Outfit', sans-serif;
+            font-size:.88rem;
+            font-weight:600;
+            cursor:pointer;
+            transition:all .2s ease;
+            box-shadow:inset 0 0 0 1px rgba(148,163,184,.3);
+        }
+
+        .res-btn .res-sub{
+            font-size:.65rem;
+            font-weight:500;
+            color:var(--text-soft);
+            transition:color .2s ease;
+        }
+
+        .res-btn.active{
+            background:var(--primary);
+            color:var(--accent-primary-text);
+            box-shadow:0 6px 18px rgba(30,58,138,0.3);
+        }
+
+        [data-theme="dark"] .res-btn.active{
+            box-shadow:0 6px 18px rgba(168,199,250,0.3);
+        }
+
+        .res-btn.active .res-sub{
+            color:var(--accent-primary-text);
+            opacity:.7;
+        }
+
+        .res-btn:not(.active):hover{
+            background:var(--bg-input-focus);
+            color:var(--text-main);
+            transform:translateY(-1px);
+        }
 
         /* OUTPUT CARD */
         .output-card{
@@ -402,10 +446,8 @@
             font-size:.92rem;
             font-weight:600;
             color:var(--text-main);
-            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
         }
 
-        /* COPY BUTTON */
         .copy-btn{
             margin-top:16px;
             width:100%;
@@ -413,20 +455,16 @@
             align-items:center;
             justify-content:center;
             gap:10px;
-
             padding:15px 26px;
             border-radius:9999px;
             border:none;
-
             background:var(--primary);
             color:var(--accent-primary-text);
             box-shadow:0 18px 40px rgba(15,23,42,0.45);
-
-            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+            font-family:'Outfit', sans-serif;
             font-size:.95rem;
             font-weight:700;
             letter-spacing:.02em;
-
             cursor:pointer;
             transition:background .14s ease, transform .08s ease, box-shadow .14s ease;
         }
@@ -472,11 +510,10 @@
         }
         .command-box::placeholder{
             color:var(--text-soft);
-            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+            font-family:'Outfit', sans-serif;
             font-size:1rem;
         }
 
-        /* SNACKBAR */
         .snackbar{
             position:fixed;
             bottom:32px;
@@ -496,7 +533,7 @@
             pointer-events:none;
             transition:opacity .5s cubic-bezier(0.34, 1.56, 0.64, 1),transform .5s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index:40;
-            font-family:'Outfit', system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+            font-family:'Outfit', sans-serif;
         }
         .snackbar.show{
             opacity:1;
@@ -516,14 +553,12 @@
             font-size:20px;
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar{width:6px;height:6px;}
         ::-webkit-scrollbar-thumb{
             background:rgba(148,163,184,.7);
             border-radius:999px;
         }
 
-        /* Responsive */
         @media (max-width:768px){
             body{align-items:flex-start;}
             .app{margin-top:24px;padding:24px 16px 32px;}
@@ -534,19 +569,15 @@
             .title{font-size:1.9rem;}
             .card{padding:18px 16px 16px;}
             .input-field,.command-box{font-size:16px;}
-            .mode-toggle{
-                padding:4px;
-            }
-            .mode-btn{
-                padding:6px 10px;
-                font-size:0.75rem;
-            }
-            .mode-btn span.mode-text{
-                display:none;
-            }
-            .header-buttons{
+            .mode-toggle{padding:4px;}
+            .mode-btn{padding:6px 10px;font-size:0.75rem;}
+            .mode-btn span.mode-text{display:none;}
+            .header-buttons{gap:8px;}
+            .resolution-grid{
+                grid-template-columns:repeat(3, 1fr);
                 gap:8px;
             }
+            .res-btn{padding:12px 6px;font-size:.82rem;}
         }
     </style>
 </head>
@@ -554,15 +585,11 @@
     <div class="app">
         <!-- Header -->
         <header class="header">
-            <div class="logo-box">
-                <span class="material-symbols-rounded">play_arrow</span>
-            </div>
             <div class="header-info">
                 <h1 class="title">YT-DLP<br>Generator</h1>
                 <p class="subtitle">Tap to paste • Auto-copy</p>
             </div>
             <div class="header-buttons">
-                <!-- Mode Toggle -->
                 <div class="mode-toggle">
                     <button class="mode-btn active" id="musicBtn" onclick="setMode('music')">
                         <span class="material-symbols-rounded">music_note</span>
@@ -573,7 +600,6 @@
                         <span class="mode-text">Video</span>
                     </button>
                 </div>
-                <!-- Theme Toggle -->
                 <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">
                     <span class="material-symbols-rounded" id="themeIcon">dark_mode</span>
                 </button>
@@ -597,17 +623,46 @@
                     <div class="input-hint">Tap below to auto‑paste</div>
                 </div>
             </div>
-            <input 
-                type="text" 
-                id="urlInput" 
-                class="input-field" 
-                placeholder="Tap here to paste link..."
-                readonly
-                onclick="autoPaste()"
-            >
+            <input type="text" id="urlInput" class="input-field" placeholder="Tap here to paste link..." readonly onclick="autoPaste()">
             <div class="status-chip" id="statusChip">
                 <span class="material-symbols-rounded" id="statusIcon">hourglass_empty</span>
                 <span id="statusText">Waiting for URL</span>
+            </div>
+        </div>
+
+        <!-- Resolution Card (Video only) -->
+        <div class="card resolution-card" id="resolutionCard">
+            <div class="resolution-header">
+                <div class="resolution-icon">
+                    <span class="material-symbols-rounded">high_quality</span>
+                </div>
+                <span class="resolution-label">Resolution</span>
+            </div>
+            <div class="resolution-grid">
+                <button class="res-btn" onclick="setResolution('2160', this)">
+                    4K
+                    <span class="res-sub">2160p</span>
+                </button>
+                <button class="res-btn" onclick="setResolution('1440', this)">
+                    2K
+                    <span class="res-sub">1440p</span>
+                </button>
+                <button class="res-btn" onclick="setResolution('1080', this)">
+                    FHD
+                    <span class="res-sub">1080p</span>
+                </button>
+                <button class="res-btn active" onclick="setResolution('720', this)">
+                    HD
+                    <span class="res-sub">720p</span>
+                </button>
+                <button class="res-btn" onclick="setResolution('480', this)">
+                    SD
+                    <span class="res-sub">480p</span>
+                </button>
+                <button class="res-btn" onclick="setResolution('360', this)">
+                    Low
+                    <span class="res-sub">360p</span>
+                </button>
             </div>
         </div>
 
@@ -621,13 +676,7 @@
                     <span class="output-label">Command Output</span>
                 </div>
             </div>
-            <textarea 
-                id="commandOutput" 
-                class="command-box" 
-                readonly 
-                placeholder="Generated command will appear here..."
-            ></textarea>
-
+            <textarea id="commandOutput" class="command-box" readonly placeholder="Generated command will appear here..."></textarea>
             <button class="copy-btn" id="copyBtn" onclick="manualCopy()">
                 <span class="material-symbols-rounded" id="copyIcon">content_copy</span>
                 <span id="copyText">Copy Command</span>
@@ -644,32 +693,61 @@
     </div>
 
     <script>
-        // Current mode: 'music' or 'video'
         let currentMode = localStorage.getItem('downloadMode') || 'music';
+        let currentResolution = localStorage.getItem('videoResolution') || '720';
 
-        // Initialize mode on load
-        (function initMode() {
+        (function init() {
             setMode(currentMode, false);
+            // Restore resolution button
+            restoreResolutionBtn();
         })();
 
-        // Set download mode
-        function setMode(mode, regenerate = true) {
+        function restoreResolutionBtn() {
+            const btns = document.querySelectorAll('.res-btn');
+            btns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(getResLabel(currentResolution))) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function getResLabel(res) {
+            const map = {'2160':'4K','1440':'2K','1080':'FHD','720':'HD','480':'SD','360':'Low'};
+            return map[res] || 'HD';
+        }
+
+        function setResolution(res, btnEl) {
+            currentResolution = res;
+            localStorage.setItem('videoResolution', res);
+
+            document.querySelectorAll('.res-btn').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+
+            // Update mode chip text
+            document.getElementById('modeChipText').textContent = `Video ${res}p`;
+
+            regenerate();
+        }
+
+        function setMode(mode, regenerateCmd = true) {
             currentMode = mode;
             localStorage.setItem('downloadMode', mode);
 
-            // Update toggle buttons
             const musicBtn = document.getElementById('musicBtn');
             const videoBtn = document.getElementById('videoBtn');
-            
+            const resCard = document.getElementById('resolutionCard');
+
             if (mode === 'music') {
                 musicBtn.classList.add('active');
                 videoBtn.classList.remove('active');
+                resCard.classList.remove('visible');
             } else {
                 videoBtn.classList.add('active');
                 musicBtn.classList.remove('active');
+                resCard.classList.add('visible');
             }
 
-            // Update mode chip
             const modeChip = document.getElementById('modeChip');
             const modeChipIcon = document.getElementById('modeChipIcon');
             const modeChipText = document.getElementById('modeChipText');
@@ -681,15 +759,18 @@
             } else {
                 modeChip.className = 'mode-chip video';
                 modeChipIcon.textContent = 'videocam';
-                modeChipText.textContent = 'Video 720p';
+                modeChipText.textContent = `Video ${currentResolution}p`;
             }
 
-            // Regenerate command if URL exists
-            if (regenerate) {
-                const url = document.getElementById('urlInput').value;
-                if (url) {
-                    generateAndCopy(url);
-                }
+            if (regenerateCmd) {
+                regenerate();
+            }
+        }
+
+        function regenerate() {
+            const url = document.getElementById('urlInput').value;
+            if (url) {
+                generateAndCopy(url);
             }
         }
 
@@ -707,35 +788,24 @@
             document.getElementById('themeIcon').textContent = saved === 'dark' ? 'light_mode' : 'dark_mode';
         })();
 
-        // Updated Strict YouTube URL validation
-function isValidYouTubeURL(url) {
-    if (!url) return false;
+        function isValidYouTubeURL(url) {
+            if (!url) return false;
+            const pattern = /^https?:\/\/(www\.)?(youtube\.com\/(watch\?|playlist\?|shorts\/|embed\/|v\/|live\/)|youtu\.be\/[a-zA-Z0-9_-]+|music\.youtube\.com\/(watch\?|playlist\?))/i;
+            return pattern.test(url);
+        }
 
-    const pattern = /^https?:\/\/(www\.)?(youtube\.com\/(watch\?|playlist\?|shorts\/|embed\/|v\/|live\/)|youtu\.be\/[a-zA-Z0-9_-]+|music\.youtube\.com\/(watch\?|playlist\?))/i;
-
-    return pattern.test(url);
-}
-
-
-        // Auto-paste
         async function autoPaste() {
             try {
                 const text = await navigator.clipboard.readText();
-                
                 if (!text || !text.trim()) {
                     updateStatus('error', 'error', 'Clipboard is empty');
                     return;
                 }
-
                 const trimmedText = text.trim();
-
-                // Check for poisoned clipboard (command instead of URL)
                 if (trimmedText.toLowerCase().startsWith('yt-dlp')) {
                     updateStatus('error', 'error', 'Clipboard has command, not URL');
                     return;
                 }
-
-                // Strict YouTube URL validation
                 if (isValidYouTubeURL(trimmedText)) {
                     document.getElementById('urlInput').value = trimmedText;
                     generateAndCopy(trimmedText);
@@ -747,41 +817,38 @@ function isValidYouTubeURL(url) {
             }
         }
 
-        // Generate + Auto-copy
         function generateAndCopy(url) {
             const isPlaylist = /[?&]list=/i.test(url);
-            
+
             let cmd = 'yt-dlp';
             cmd += isPlaylist ? ' --yes-playlist' : ' --no-playlist';
-            
+
             if (currentMode === 'music') {
-                // Music mode - MP3 audio
                 cmd += ' -x --audio-format mp3 --audio-quality 0';
                 cmd += ' --embed-thumbnail --embed-metadata --add-metadata';
-                cmd += isPlaylist 
-                    ? ' -o "C:/Users/Goutam/Music/%(playlist_title)s/%(title)s.%(ext)s"'
-                    : ' -o "C:/Users/Goutam/Music/%(title)s.%(ext)s"';
-                cmd += ' --download-archive "C:/Users/Goutam/Music/downloaded.txt"';
+                cmd += isPlaylist
+                    ? ' -o "/home/goutam/Music/%(playlist_title)s/%(title)s.%(ext)s"'
+                    : ' -o "/home/goutam/Music/%(title)s.%(ext)s"';
+                cmd += ' --download-archive "/home/goutam/Music/downloaded.txt"';
             } else {
-                // Video mode - 720p MP4
-                cmd += ' -f "bestvideo[height<=720]+bestaudio/best[height<=720]"';
+                const res = currentResolution;
+                cmd += ` -f "bestvideo[height<=${res}]+bestaudio/best[height<=${res}]"`;
                 cmd += ' --merge-output-format mp4';
                 cmd += ' --embed-thumbnail --embed-metadata --add-metadata';
-                cmd += isPlaylist 
-                    ? ' -o "C:/Users/Goutam/Documents/Padhai/%(playlist_title)s/%(title)s.%(ext)s"'
-                    : ' -o "C:/Users/Goutam/Documents/Padhai/%(title)s.%(ext)s"';
-                cmd += ' --download-archive "C:/Users/Goutam/Documents/Padhai/downloaded.txt"';
+                cmd += isPlaylist
+                    ? ' -o "/home/goutam/Padhai/%(playlist_title)s/%(title)s.%(ext)s"'
+                    : ' -o "/home/goutam/Padhai/%(title)s.%(ext)s"';
+                cmd += ' --download-archive "/home/goutam/Padhai/downloaded.txt"';
             }
-            
+
             cmd += ` "${url}"`;
 
             const textarea = document.getElementById('commandOutput');
             textarea.value = cmd;
 
-            // Copy using fallback method
             textarea.select();
             textarea.setSelectionRange(0, 99999);
-            
+
             try {
                 document.execCommand('copy');
                 const type = isPlaylist ? 'Playlist' : (currentMode === 'music' ? 'Track' : 'Video');
@@ -800,15 +867,13 @@ function isValidYouTubeURL(url) {
                     updateStatus('', 'info', 'Tap Copy to copy');
                 });
             }
-            
+
             window.getSelection().removeAllRanges();
         }
 
-        // Manual copy
         async function manualCopy() {
             const cmd = document.getElementById('commandOutput').value;
             if (!cmd) return;
-
             try {
                 await navigator.clipboard.writeText(cmd);
                 showCopied();
@@ -833,7 +898,6 @@ function isValidYouTubeURL(url) {
             btn.classList.add('copied');
             document.getElementById('copyIcon').textContent = 'check';
             document.getElementById('copyText').textContent = 'Copied';
-
             setTimeout(() => {
                 btn.classList.remove('copied');
                 document.getElementById('copyIcon').textContent = 'content_copy';
